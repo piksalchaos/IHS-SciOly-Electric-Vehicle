@@ -10,6 +10,9 @@ const int MAX_PWM = 2000;
 Servo esc;
 bool runStarted = false;
 
+const int RUN_DURATION_MILLISECONDS = 5000;
+
+/*
 const float MOTOR_KV = 980;
 const float BATTERY_VOLTAGE = 12.0;
 const float GEAR_RATIO = 2;
@@ -17,6 +20,7 @@ const float GEAR_RATIO = 2;
 const float WHEEL_DIAMETER_METERS = 2 * 0.0254;
 
 const float TARGET_DISTANCE_METERS = 5;
+*/
 
 void begin_esc_calibration() {
   Serial.println("Starting ESC calibration...");
@@ -49,11 +53,18 @@ void setup() {
 void loop() { 
   if (digitalRead(START_BUTTON_PIN) == LOW && !runStarted) {
     runStarted = true;
-    Serial.println("WOOP");
-    moveDistance(TARGET_DISTANCE_METERS);
+    Serial.println("RUN HAS STARTED!");
+    moveForDuration(RUN_DURATION_MILLISECONDS);
   }
 }
 
+void moveForDuration(float milliseconds) {
+  esc.write(180);
+  delay(milliseconds);
+  esc.write(0);
+}
+
+/*
 void moveDistance(float targetDistanceMeters) {
   float motorRPM = MOTOR_KV * BATTERY_VOLTAGE;
   float wheelRPM = motorRPM / GEAR_RATIO;
@@ -68,4 +79,4 @@ void moveDistance(float targetDistanceMeters) {
   esc.write(180);
   delay(runTimeSeconds * 1000);
   esc.write(0);
-}
+} */
